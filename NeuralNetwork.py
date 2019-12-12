@@ -15,7 +15,6 @@ class NeuralNetwork:
 
     def train(self, training_data, epochs, batch_size, learning_rate, test_data=None):
         n = len(training_data)
-        n_test = 0 if test_data is None else len(test_data)
         for i in range(epochs):
             random.shuffle(training_data)
             batches = [training_data[k:k+batch_size] for k in range(0, n, batch_size)]
@@ -23,7 +22,7 @@ class NeuralNetwork:
                 self.update_network(batch, learning_rate)
             if test_data is not None:
                 correct = self.evaluate(test_data)
-                print("Epoch {0}: MSE {1}".format(i, correct))
+                print("Epoch {0}: Accuracy {1}".format(i, correct))
             else:
                 print("Epoch {0} finished".format(i))
 
@@ -63,8 +62,14 @@ class NeuralNetwork:
         return delta_w, delta_b
 
     def evaluate(self, test_data):
-        test_results = [(self.predict(x)[0][0] - y)**2 for (x, y) in test_data]
-        return (1/len(test_data)) * sum(test_results)
+        correct = 0
+        total = 0
+        for x, y in test_data:
+            prediction = self.predict(x)
+            if np.argmax(prediction) == np.argmax(y):
+                correct += 1
+            total += 1
+        return correct/total
 
     @staticmethod
     def sigmoid(x):
