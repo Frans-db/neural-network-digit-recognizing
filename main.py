@@ -24,12 +24,12 @@ training_data = training_data[5000:]
 
 # create network
 inputs = 28*28
-hidden = [int(inputs**0.5) for i in range(0, 5)]
+hidden = [32]
 outputs = 10
 nn = NeuralNetwork.NeuralNetwork([inputs] + hidden + [outputs])
 # train network
 print('-=-Training network-=-')
-nn.train(training_data, 25, 40, 3, test_data=test_data)
+nn.train(training_data, 10, 40, 3, test_data=test_data)
 
 # test network
 print('-=-Testing network. Press q to go to next digit, terminate program to stop-=-')
